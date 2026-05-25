@@ -17,6 +17,7 @@
                         <RadzenDataGridColumn Property="CharacterDTO.FirstName"  Title="First Name"  Width="160px" />
                         <RadzenDataGridColumn Property="CharacterDTO.MiddleName" Title="Middle Name" Width="160px" />
                         <RadzenDataGridColumn Property="CharacterDTO.LastName"   Title="Last Name"  Width="160px"  />
+                        <RadzenDataGridColumn Property="CharacterDTO.IsMain"     Title="Main"       Width="160px"  />
                         <RadzenDataGridColumn Title="Actions" Width="160px">
                             <Template Context="character">
                                 <RadzenButton Icon="delete" Click="@(() => Delete(character.Id))"
@@ -45,6 +46,9 @@
 
             <RadzenLabel   Text = "Last Name" />
             <RadzenTextBox Placeholder = "Last Name"   @bind-Value="character.LastName"/>
+
+            <RadzenLabel   Text = "Main Character" />
+            <RadzenCheckBox @bind-Value="character.IsMain" />
 
             <RadzenButton Text="Add" Click="Add"/>
         </li>

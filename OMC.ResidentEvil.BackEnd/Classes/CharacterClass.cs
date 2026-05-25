@@ -27,9 +27,10 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                     characters.Add(new CharacterDTO
                     {
                         Id = item.Id,
-                        FirstName = item.FirstName,
+                        FirstName  = item.FirstName,
                         MiddleName = item.MiddleName,
-                        LastName = item.LastName,
+                        LastName   = item.LastName,
+                        IsMain     = item.IsMain,
                         Game = new VideogameDTO
                         {
                             Id = item.IdGameNavigation.Id,
@@ -51,7 +52,8 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                     FirstName = character.FirstName,
                     MiddleName = character.MiddleName,
                     LastName = character.LastName,
-                    IdGame = character.Game.Id
+                    IdGame = character.Game.Id,
+                    IsMain = character.IsMain
                 };
                 db.Characters.Add(lCharacter);
                 db.SaveChanges();

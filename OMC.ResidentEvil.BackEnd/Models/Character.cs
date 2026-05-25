@@ -15,5 +15,7 @@ public partial class Character
 
     public string LastName { get; set; } = null!;
 
+    public bool IsMain { get; set; }
+
     public virtual Videogame IdGameNavigation { get; set; } = null!;
 }
