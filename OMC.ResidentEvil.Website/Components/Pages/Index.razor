@@ -1,0 +1,26 @@
+﻿@page "/index"
+@using OMC.ResidentEvil.BackEnd.Enums;
+@using OMC.ResidentEvil.Website.Components.Pages.PartialViews;
+
+<h3>Resident Evil</h3>
+
+<select name="Options" @onchange="selectedGrid">
+   <option value ="0"> </option>
+      @foreach (var item in _options)
+       {                
+           <option value="@item.Key"> @item.Value </option>
+       }
+</select>
+
+@if ((Views)_selectedValue == Views.Videogames)
+{
+    <Videogames/>
+}
+@if ((Views)_selectedValue == Views.Characters)
+{
+    <Characters/>
+}
+@if ((Views)_selectedValue == Views.Guns)
+{
+    <Guns/>
+}

@@ -1,0 +1,4 @@
+# Ignore vs folder
+.vs/
+bin/
+obj/

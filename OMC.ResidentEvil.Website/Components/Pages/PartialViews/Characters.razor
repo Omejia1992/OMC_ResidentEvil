@@ -1,0 +1,52 @@
+﻿@using OMC.ResidentEvil.BackEnd.DTOS
+@using Radzen.Blazor.Rendering
+
+<div class="newEntry">
+    <h3> Characters </h3>
+    <RadzenDataGrid @ref="grid"
+                    AllowFiltering    ="true"
+                    AllowPaging       ="true"
+                    AllowSorting      ="true"
+                    AllowColumnResize = "true"
+                    Data="@characters"
+                    TItem="CharacterDTO"
+                    PageSize="8">
+                    <Columns>
+                        <RadzenDataGridColumn Property="CharacterDTO.Id"         Title="Id"          Width="160px" />
+                        <RadzenDataGridColumn Property="CharacterDTO.Game.Name"  Title="Game"        Width="160px" />
+                        <RadzenDataGridColumn Property="CharacterDTO.FirstName"  Title="First Name"  Width="160px" />
+                        <RadzenDataGridColumn Property="CharacterDTO.MiddleName" Title="Middle Name" Width="160px" />
+                        <RadzenDataGridColumn Property="CharacterDTO.LastName"   Title="Last Name"  Width="160px"  />
+                        <RadzenDataGridColumn Title="Actions" Width="160px">
+                            <Template Context="character">
+                                <RadzenButton Icon="delete" Click="@(() => Delete(character.Id))"
+                                    ButtonStyle="ButtonStyle.Danger"/>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>  
+    </RadzenDataGrid>
+</div>
+
+<div class="newEntry">
+    <ul>
+        <li>
+            <h3>New Character</h3>
+        </li>
+        <li>
+            <RadzenLabel Text="Videogame"/>
+            <RadzenDropDown TValue="int" Data="@games" TextProperty="Name" ValueProperty="Id" 
+                                  Placeholder="Select Game" @bind-Value="@character.Game.Id"/>
+
+            <RadzenLabel   Text = "First Name"/>
+            <RadzenTextBox Placeholder = "First Name"  @bind-Value="character.FirstName"/>
+
+            <RadzenLabel   Text = "Middle Name"/>
+            <RadzenTextBox Placeholder = "Middle Name" @bind-Value="character.MiddleName"/>
+
+            <RadzenLabel   Text = "Last Name" />
+            <RadzenTextBox Placeholder = "Last Name"   @bind-Value="character.LastName"/>
+
+            <RadzenButton Text="Add" Click="Add"/>
+        </li>
+    </ul>
+</div>

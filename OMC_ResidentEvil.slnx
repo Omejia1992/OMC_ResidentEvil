@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/OMC.ResidentEvil.API/">
+    <Project Path="OMC.ResidentEvil.API/OMC.ResidentEvil.Swagger.csproj" />
+  </Folder>
+  <Folder Name="/OMC.ResidentEvil.Client/">
+    <Project Path="OMC.ResidentEvil.Website/OMC.ResidentEvil.Website.csproj" Id="937c42d4-61ed-431b-bf99-f5f804d58efa" />
+  </Folder>
+  <Folder Name="/OMC.ResidentEvil.Server/">
+    <Project Path="OMC.ResidentEvil.BackEnd/OMC.ResidentEvil.BackEnd.csproj" Id="5873a2f9-6742-49c2-8b84-c012da12b0fb" />
+  </Folder>
+</Solution>

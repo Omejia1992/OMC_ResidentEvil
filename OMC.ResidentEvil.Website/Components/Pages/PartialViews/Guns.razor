@@ -1,0 +1,46 @@
+﻿@using OMC.ResidentEvil.BackEnd.DTOS
+@using Radzen.Blazor.Rendering
+
+<div class="newEntry">
+    <h3>Guns</h3>
+    <RadzenDataGrid @ref="grid"
+                    AllowFiltering    = "true"
+                    AllowPaging       = "true"
+                    AllowSorting      = "true"
+                    AllowColumnResize = "true"
+                    Data     = "@guns"
+                    TItem    = "GunDTO"
+                    PageSize = "8">
+                    <Columns>
+                        <RadzenDataGridColumn Property="GunDTO.Id"        Title="Id"   Width="160px"/>
+                        <RadzenDataGridColumn Property="GunDTO.Game.Name" Title="Game" Width="160px" />   
+                        <RadzenDataGridColumn Property="GunDTO.Name"      Title="Name" Width="160px"/>
+                        <RadzenDataGridColumn Title="Actions" Width="160px">
+                            <Template Context="gun">
+                                <RadzenButton Icon="delete" Click="@(() => Delete(gun.Id))"
+                                    ButtonStyle="ButtonStyle.Danger"/>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>            
+    </RadzenDataGrid>
+</div>
+
+<div class="newEntry">
+    <ul>
+        <li>
+            <h3> New Gun </h3> 
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <RadzenLabel Text="Videogame" />
+            <RadzenDropDown TValue="int" Data="@games" TextProperty="Name" ValueProperty="Id"
+                            Placeholder="Select Game" @bind-Value="@gun.Game.Id" />
+
+            <RadzenLabel Text="Name" />
+            <RadzenTextBox Placeholder="Name" @bind-Value="gun.Name" />
+            
+            <RadzenButton Text="Add" Click="Add"/>
+        </li>
+    </ul>
+</div>

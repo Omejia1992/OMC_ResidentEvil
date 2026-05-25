@@ -1,0 +1,46 @@
+﻿@using OMC.ResidentEvil.BackEnd.DTOS
+@using Radzen.Blazor.Rendering
+
+<div class="newEntry">
+    <h3>Videogames</h3> 
+    <RadzenDataGrid @ref="grid"
+                    AllowFiltering    = "true"
+                    AllowPaging       = "true"
+                    AllowSorting      = "true"
+                    AllowColumnResize = "true"
+                    Data= "@games"
+                    TItem= "VideogameDTO"
+                    PageSize="8">
+                    <Columns>
+                        <RadzenDataGridColumn Property="VideogameDTO.Id"   Title="Id"   Width="160px"/>
+                        <RadzenDataGridColumn Property="VideogameDTO.Name" Title="Name" Width="160px"/>
+                        <RadzenDataGridColumn Property="VideogameDTO.Year" Title="Year" Width="100px"/>
+                        <RadzenDataGridColumn Title="Actions" Width="160px">
+                            <Template Context="videogame">
+                                <RadzenButton Icon="delete" Click="@(() => Delete(videogame.Id))"
+                                       ButtonStyle="ButtonStyle.Danger"/>
+                            </Template>
+                        </RadzenDataGridColumn>
+                    </Columns>
+    </RadzenDataGrid>
+</div>
+
+<div class="newEntry">
+    <ul>
+        <li>
+            <h3> New Game </h3>
+        </li>
+        <li>
+            <RadzenLabel Text ="Name" />
+            <RadzenTextBox Placeholder="Name" @bind-Value="game.Name"/>
+
+            <RadzenLabel Text="Year" />   
+            <RadzenNumeric Placeholder="Year" @bind-Value="game.Year"/>
+
+            <RadzenLabel Text="Remake" />
+            <RadzenCheckBox @bind-Value="game.HasRemake" /> 
+
+            <RadzenButton Text="Add" Click="Add"/>
+        </li>
+    </ul>
+</div>
