@@ -47,7 +47,6 @@ namespace OMC.ResidentEvil.BackEnd.Controllers
         {
             Character character = new Character
             {
-                IdGame     = characterDto.Game.Id,
                 FirstName  = characterDto.FirstName,              
                 LastName   = characterDto.LastName
             };

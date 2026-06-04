@@ -3,6 +3,14 @@
 
 <div class="newEntry">
     <h3> Characters </h3>
+
+    <select name="Options" @onchange="selectedCharacter">
+        @foreach (var item in cOptions)
+        {
+            <option value="@item.Key"> @item.Value </option>    
+        }
+    </select>
+
     <RadzenDataGrid @ref="grid"
                     AllowFiltering    ="true"
                     AllowPaging       ="true"
@@ -13,7 +21,7 @@
                     PageSize="8">
                     <Columns>
                         <RadzenDataGridColumn Property="CharacterDTO.Id"         Title="Id"          Width="160px" />
-                        <RadzenDataGridColumn Property="CharacterDTO.Game.Name"  Title="Game"        Width="160px" />
+                        <RadzenDataGridColumn Property="CharacterDTO.GamesName" Title="Games"       Width="160px" />
                         <RadzenDataGridColumn Property="CharacterDTO.FirstName"  Title="First Name"  Width="160px" />
                         <RadzenDataGridColumn Property="CharacterDTO.MiddleName" Title="Middle Name" Width="160px" />
                         <RadzenDataGridColumn Property="CharacterDTO.LastName"   Title="Last Name"  Width="160px"  />
@@ -30,14 +38,21 @@
 
 <div class="newEntry">
     <ul>
-        <li>
-            <h3>New Character</h3>
+        <li class="listLine">
+            <h2>New Character</h2>
         </li>
-        <li>
+        <li class="listLine">
             <RadzenLabel Text="Videogame"/>
             <RadzenDropDown TValue="int" Data="@games" TextProperty="Name" ValueProperty="Id" 
                                   Placeholder="Select Game" @bind-Value="@character.Game.Id"/>
 
+            <RadzenDropDown TValue="int" Data="@characters" TextProperty="FullName" ValueProperty="Id"
+                                  Placeholder="Select Character" @bind-Value="character.Id"/>
+        </li>
+        <li class="listLine">
+            <h3> If your Character is not yet available, register it </h3>
+        </li>
+        <li class="listLine">
             <RadzenLabel   Text = "First Name"/>
             <RadzenTextBox Placeholder = "First Name"  @bind-Value="character.FirstName"/>
 

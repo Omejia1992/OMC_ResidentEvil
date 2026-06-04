@@ -19,10 +19,10 @@ namespace OMC.ResidentEvil.BackEnd.Classes
             {
                 List<CharacterDTO> characters = new List<CharacterDTO>();
 
-                foreach (var item in db.Characters.Include(i => i.IdGameNavigation))
+                foreach (var item in db.Characters.Include(i => i.VideogameCharacters).ThenInclude( iv => iv.IdGameNavigation))
                 {
 
-                    Videogame game = item.IdGameNavigation;
+                    //Videogame game = item.IdGameNavigation;
 
                     characters.Add(new CharacterDTO
                     {
@@ -31,12 +31,15 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                         MiddleName = item.MiddleName,
                         LastName   = item.LastName,
                         IsMain     = item.IsMain,
-                        Game = new VideogameDTO
+
+                        Games = item.VideogameCharacters.Select(vc => new VideogameDTO
                         {
-                            Id = item.IdGameNavigation.Id,
-                            Name = item.IdGameNavigation.Name,
-                            Year = item.IdGameNavigation.Year
-                        }
+                            Id = vc.IdGameNavigation.Id,
+                            Name = vc.IdGameNavigation.Name,
+                            Year = vc.IdGameNavigation.Year
+                        }).ToList(),
+
+                        GamesName = string.Join(", ", item.VideogameCharacters.Select(vc => vc.IdGameNavigation.Name))
                     });
                 }
                 return characters;
@@ -47,19 +50,52 @@ namespace OMC.ResidentEvil.BackEnd.Classes
 
             try
             {
-                Character lCharacter = new Character()
-                {
-                    FirstName = character.FirstName,
-                    MiddleName = character.MiddleName,
-                    LastName = character.LastName,
-                    IdGame = character.Game.Id,
-                    IsMain = character.IsMain
-                };
-                db.Characters.Add(lCharacter);
-                db.SaveChanges();
+                if (character.Id > 0) { 
+                    
+                    AddExisting(character);
+                }
+                else{
+
+                    Character lCharacter = new Character()
+                    {
+                        FirstName = character.FirstName,
+                        MiddleName = character.MiddleName,
+                        LastName = character.LastName,
+                        IsMain = character.IsMain
+                    };
+
+                    db.Characters.Add(lCharacter);
+                    db.SaveChanges();
+
+                    VideogameCharacter videogameCharacter = new VideogameCharacter()
+                    {
+                        IdGame = character.Game.Id,
+                        Idcharacter = lCharacter.Id
+                    };
+
+                    db.VideogameCharacters.Add(videogameCharacter);
+                    db.SaveChanges();
+                }
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); }
         }
+
+        public static void AddExisting(CharacterDTO character)
+        {
+            try
+            {
+                VideogameCharacter videogameCharacter = new VideogameCharacter()
+                {
+                    IdGame = character.Game.Id,
+                    Idcharacter = character.Id
+                };
+                
+                db.VideogameCharacters.Add(videogameCharacter);
+                db.SaveChanges();                
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
+        }
+
         public static void Delete(int id) {
 
             try

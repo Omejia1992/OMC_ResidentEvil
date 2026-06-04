@@ -13,7 +13,7 @@ public partial class Videogame
 
     public bool HasRemake { get; set; }
 
-    public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
-
     public virtual ICollection<Gun> Guns { get; set; } = new List<Gun>();
+
+    public virtual ICollection<VideogameCharacter> VideogameCharacters { get; set; } = new List<VideogameCharacter>();
 }

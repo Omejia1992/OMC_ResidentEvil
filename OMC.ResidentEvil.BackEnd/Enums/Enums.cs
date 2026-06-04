@@ -17,4 +17,15 @@ namespace OMC.ResidentEvil.BackEnd.Enums
          Guns = 3,
 
     }
+
+    public enum CharacterType {
+        [Description("All")]
+        All = 0,
+
+        [Description("Main")]
+        Main = 1,
+
+        [Description("Secondary")]
+        Secondary = 2,
+    }
 }

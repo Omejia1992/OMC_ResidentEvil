@@ -21,6 +21,8 @@ public partial class dbContext : DbContext
 
     public virtual DbSet<Videogame> Videogames { get; set; }
 
+    public virtual DbSet<VideogameCharacter> VideogameCharacters { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=OMC_Videogames; User Id=user; Password=user123; TrustServerCertificate=True;");
@@ -42,11 +44,6 @@ public partial class dbContext : DbContext
             entity.Property(e => e.MiddleName)
                 .HasMaxLength(30)
                 .IsUnicode(false);
-
-            entity.HasOne(d => d.IdGameNavigation).WithMany(p => p.Characters)
-                .HasForeignKey(d => d.IdGame)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Character__IdGam__398D8EEE");
         });
 
         modelBuilder.Entity<Gun>(entity =>
@@ -70,6 +67,23 @@ public partial class dbContext : DbContext
             entity.ToTable("Videogame");
 
             entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<VideogameCharacter>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Videogam__3214EC07E0ED9805");
+
+            entity.ToTable("VideogameCharacter");
+
+            entity.HasOne(d => d.IdGameNavigation).WithMany(p => p.VideogameCharacters)
+                .HasForeignKey(d => d.IdGame)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Videogame__IdGam__4CA06362");
+
+            entity.HasOne(d => d.IdcharacterNavigation).WithMany(p => p.VideogameCharacters)
+                .HasForeignKey(d => d.Idcharacter)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Videogame__Idcha__4D94879B");
         });
 
         OnModelCreatingPartial(modelBuilder);

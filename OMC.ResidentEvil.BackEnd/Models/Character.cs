@@ -7,8 +7,6 @@ public partial class Character
 {
     public int Id { get; set; }
 
-    public int IdGame { get; set; }
-
     public string FirstName { get; set; } = null!;
 
     public string? MiddleName { get; set; }
@@ -17,5 +15,9 @@ public partial class Character
 
     public bool IsMain { get; set; }
 
-    public virtual Videogame IdGameNavigation { get; set; } = null!;
+    public bool IsSideKick { get; set; }
+
+    public bool IsVillain { get; set; }
+
+    public virtual ICollection<VideogameCharacter> VideogameCharacters { get; set; } = new List<VideogameCharacter>();
 }

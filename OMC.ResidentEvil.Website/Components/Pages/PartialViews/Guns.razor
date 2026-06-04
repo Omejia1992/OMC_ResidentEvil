@@ -27,12 +27,12 @@
 
 <div class="newEntry">
     <ul>
-        <li>
+        <li class="listLine">
             <h3> New Gun </h3> 
         </li>
     </ul>
     <ul>
-        <li>
+        <li class="listLine">
             <RadzenLabel Text="Videogame" />
             <RadzenDropDown TValue="int" Data="@games" TextProperty="Name" ValueProperty="Id"
                             Placeholder="Select Game" @bind-Value="@gun.Game.Id" />
