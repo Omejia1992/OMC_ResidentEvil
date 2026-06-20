@@ -62,7 +62,7 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         }
 
         protected async Task GetSecondary() {
-            characters = SecondaryCharacterClass.GetSecondary();
+            characters = SideCharacterClass.GetSecondary();
             await grid.Reload();
         }
 

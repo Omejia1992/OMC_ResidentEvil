@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OMC.ResidentEvil.BackEnd.Classes
 {
-    public class SecondaryCharacterClass : CharacterClass
+    public class SideCharacterClass : CharacterClass
     {
        static dbContext dbContext = new dbContext();
 

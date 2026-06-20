@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using OMC.ResidentEvil.BackEnd.Helpers;
 
 namespace OMC.ResidentEvil.BackEnd.Classes
 {
@@ -27,10 +28,10 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                     characters.Add(new CharacterDTO
                     {
                         Id = item.Id,
-                        FirstName  = item.FirstName,
+                        FirstName = item.FirstName,
                         MiddleName = item.MiddleName,
-                        LastName   = item.LastName,
-                        IsMain     = item.IsMain,
+                        LastName = item.LastName,
+                        IsMain = item.IsMain,
 
                         Games = item.VideogameCharacters.Select(vc => new VideogameDTO
                         {
@@ -39,7 +40,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                             Year = vc.IdGameNavigation.Year
                         }).ToList(),
 
-                        GamesName = string.Join(", ", item.VideogameCharacters.Select(vc => vc.IdGameNavigation.Name))
+                        GamesName = StringHelper.Combiner(item.VideogameCharacters.Select(vc => vc.IdGameNavigation.Name).ToList())
                     });
                 }
                 return characters;
