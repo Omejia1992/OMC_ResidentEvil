@@ -14,6 +14,7 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
     {
         CharacterType _selectedValue = 0;
         Dictionary<int, string> cOptions = new Dictionary<int, string>();
+        bool isEditActive = false;
 
         RadzenDataGrid<CharacterDTO> grid = new RadzenDataGrid<CharacterDTO>();
         List<CharacterDTO> characters = new List<CharacterDTO>();
@@ -49,18 +50,37 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
             }
         }
 
+        /// <summary>
+        /// Gets the Entire list of Characters
+        /// </summary>
         protected async Task Get(){
 
             characters = CharacterClass.Get();
             await grid.Reload();
         }
 
+        /// <summary>
+        /// Gets the Data on the Selected Character
+        /// </summary>
+        protected async Task Get(int id) {
+            character = CharacterClass.Get(id);
+            character.Game = new VideogameDTO ();
+            Get();
+        }
+
+        /// <summary>
+        /// Gets the List of Main Characters
+        /// </summary>
         protected async Task GetMain() {
 
             characters = MainCharacterClass.GetMain();
             await grid.Reload();
         }
 
+        /// <summary>
+        /// Gets the List of Secondary Characters
+        /// </summary>
+        /// <returns></returns>
         protected async Task GetSecondary() {
             characters = SideCharacterClass.GetSecondary();
             await grid.Reload();
@@ -73,8 +93,18 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
             character = new CharacterDTO{Game = new VideogameDTO()};               
         }
 
-        protected async Task Delete(int id) { 
-            
+        protected async Task Edit(int id) {
+            isEditActive = true;
+            Get(id);
+        }
+
+        protected async Task Update() {
+
+            CharacterClass.Add(character);
+        }
+
+        protected async Task Delete(int id)
+        {
             CharacterClass.Delete(id);
             Get();
         }
