@@ -8,6 +8,9 @@ namespace OMC.ResidentEvil.BackEnd.Helpers
 {
     internal class CharacterHelper
     {
+        /// <summary>
+        /// Sets the Character from db to a DTO Type 
+        /// </summary>
         public CharacterDTO SetCharacter(Character item)
         {
             try
@@ -36,6 +39,29 @@ namespace OMC.ResidentEvil.BackEnd.Helpers
                 Console.WriteLine(ex.Message);
                 return new CharacterDTO();
             }
+        }
+
+        /// <summary>
+        /// Sets the CharacterDTO to a Character Type
+        /// </summary>
+        public Character SetCharacter(CharacterDTO character)
+        {
+            Character lcharacter = new Character();
+            try
+            {
+                lcharacter = new Character
+                {
+                    Id = character.Id,
+                    FirstName = character.FirstName,
+                    MiddleName = character.MiddleName,
+                    LastName = character.LastName,
+                    IsMain = character.IsMain
+                };
+            }
+            catch(Exception ex){
+                Console.WriteLine(ex.Message);
+            }
+            return lcharacter;
         }
     }
 }

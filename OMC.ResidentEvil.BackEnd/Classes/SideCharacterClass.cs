@@ -10,7 +10,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
     {
        static dbContext dbContext = new dbContext();
 
-        public static List<CharacterDTO> GetSecondary()
+        public List<CharacterDTO> GetSecondary()
         {
             List<CharacterDTO> characters = new List<CharacterDTO>();
 

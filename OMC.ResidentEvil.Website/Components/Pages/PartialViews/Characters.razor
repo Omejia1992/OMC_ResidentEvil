@@ -46,20 +46,25 @@
 
         <div >
             <ul>
-                <li class="listLine">
-                    <h2>New Character</h2>
-                </li>
-                <li class="listLine">
-                    <RadzenLabel Text="Videogame"/>
-                    <RadzenDropDown TValue="int" Data="@games" TextProperty="Name" ValueProperty="Id" 
-                    Placeholder="Select Game" @bind-Value="@character.Game.Id"/>
+                @if (!isEditActive){
+                    <li class="listLine">
+                        <h2>New Character</h2>
+                    </li>
+                    <li class="listLine">
+                        <RadzenLabel Text="Videogame"/>
+                        <RadzenDropDown TValue="int" Data="@games" TextProperty="Name" ValueProperty="Id" 
+                        Placeholder="Select Game" @bind-Value="@character.Game.Id"/>
 
-                    <RadzenDropDown TValue="int" Data="@characters" TextProperty="FullName" ValueProperty="Id"
-                    Placeholder="Select Character" @bind-Value="character.Id"/>
-                </li>
+                        <RadzenDropDown TValue="int" Data="@characters" TextProperty="FullName" ValueProperty="Id"
+                        Placeholder="Select Character" @bind-Value="character.Id"/>
+                    </li>            
+                }
                 <li class="listLine">
-                    <h3> If your Character is not yet available, register it </h3>
-                </li>
+                @if (!isEditActive)
+                { <h3> If your Character is not yet available, register it </h3> }
+                else
+                { <h3> Update your Character Data </h3> }
+            </li>
                 <li class="listLine">
                     <RadzenLabel   Text = "First Name"/>
                     <RadzenTextBox Placeholder = "First Name"  @bind-Value="character.FirstName"/>
@@ -72,10 +77,11 @@
 
                     <RadzenLabel   Text = "Main Character" />
                     <RadzenCheckBox @bind-Value="character.IsMain" />
-                @if (!isEditActive)
-                     { <RadzenButton Text="Add" Click="Add"/> }
-                else { <RadzenButton Text="Save Changes" Click="Update" />}
-            </li>
+
+                    @if (!isEditActive)
+                         { <RadzenButton Text="Add" Click="Add"/> }
+                    else { <RadzenButton Text="Save Changes" Click="Update" />}
+                </li>
             </ul>
         </div>
 </div>

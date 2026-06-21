@@ -13,19 +13,19 @@ namespace OMC.ResidentEvil.BackEnd.Classes
 {
     public class CharacterClass: IMethods<CharacterDTO>
     {
-        static dbContext db = new dbContext();
+        private dbContext db = new dbContext();
         static CharacterHelper cHelper = new CharacterHelper();
 
         /// <summary>
         /// Gets the Characters Data
         /// </summary>
-        public static List<CharacterDTO> Get(){
+        public List<CharacterDTO> Get(){
 
             try
             {
                 List<CharacterDTO> characters = new List<CharacterDTO>();
 
-                foreach (var item in db.Characters.Include(i => i.VideogameCharacters)
+                foreach (var item in db.Characters.AsNoTracking().Include(i => i.VideogameCharacters)
                                                   .ThenInclude( iv => iv.IdGameNavigation))
                 {
                     characters.Add(cHelper.SetCharacter(item));
@@ -39,12 +39,12 @@ namespace OMC.ResidentEvil.BackEnd.Classes
         /// <summary>
         /// Gets one Particular Character Data
         /// </summary>
-        public static CharacterDTO Get(int id){
+        public CharacterDTO Get(int id){
 
             CharacterDTO character = new CharacterDTO();
             try
             {
-                var lcharacter = db.Characters.Include(i => i.VideogameCharacters)
+                var lcharacter = db.Characters.AsNoTracking().Include(i => i.VideogameCharacters)
                                               .ThenInclude(iv => iv.IdGameNavigation)
                                               .Where( c => c.Id == id).FirstOrDefault();
 
@@ -61,7 +61,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
         /// <summary>
         /// Adds a new Character in the Database
         /// </summary>
-        public static void Add(CharacterDTO character){
+        public void Add(CharacterDTO character){
 
             try
             {
@@ -71,14 +71,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                 }
                 else{
 
-                    Character lCharacter = new Character()
-                    {
-                        FirstName = character.FirstName,
-                        MiddleName = character.MiddleName,
-                        LastName = character.LastName,
-                        IsMain = character.IsMain
-                    };
-
+                    Character lCharacter = cHelper.SetCharacter(character);
                     db.Characters.Add(lCharacter);
                     db.SaveChanges();
 
@@ -98,7 +91,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
         /// <summary>
         ///  Adds a new Relation between a Character and a Videogame
         /// </summary>
-        public static void AddExisting(CharacterDTO character) {
+        public void AddExisting(CharacterDTO character) {
             try
             {
                 VideogameCharacter videogameCharacter = new VideogameCharacter()
@@ -114,9 +107,26 @@ namespace OMC.ResidentEvil.BackEnd.Classes
         }
 
         /// <summary>
+        /// Update a Character Main Data
+        /// </summary>
+        public void Update(CharacterDTO character)
+        {
+            try
+            {
+                Character lCharacter = cHelper.SetCharacter(character);
+                db.Update(lCharacter);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Removes the selected Character
         /// </summary>
-        public static void Delete(int id) {
+        public void Delete(int id) {
 
             try
             {

@@ -15,6 +15,7 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         CharacterType _selectedValue = 0;
         Dictionary<int, string> cOptions = new Dictionary<int, string>();
         bool isEditActive = false;
+        CharacterClass _characterClass = new CharacterClass();
 
         RadzenDataGrid<CharacterDTO> grid = new RadzenDataGrid<CharacterDTO>();
         List<CharacterDTO> characters = new List<CharacterDTO>();
@@ -38,15 +39,15 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
 
             if (_selectedValue == (CharacterType.All))
             {
-                Get(); 
+               await Get(); 
             }
             else if (_selectedValue == CharacterType.Main) 
             {
-                GetMain();
+               await GetMain();
             }
             else 
             { 
-                GetSecondary();
+               await GetSecondary();
             }
         }
 
@@ -55,7 +56,7 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         /// </summary>
         protected async Task Get(){
 
-            characters = CharacterClass.Get();
+            characters = _characterClass.Get();
             await grid.Reload();
         }
 
@@ -63,9 +64,9 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         /// Gets the Data on the Selected Character
         /// </summary>
         protected async Task Get(int id) {
-            character = CharacterClass.Get(id);
+            character = _characterClass.Get(id);
             character.Game = new VideogameDTO ();
-            Get();
+            await Get();
         }
 
         /// <summary>
@@ -73,7 +74,8 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         /// </summary>
         protected async Task GetMain() {
 
-            characters = MainCharacterClass.GetMain();
+            MainCharacterClass _mainCharacterClass = new MainCharacterClass();
+            characters = _mainCharacterClass.GetMain();
             await grid.Reload();
         }
 
@@ -82,31 +84,35 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         /// </summary>
         /// <returns></returns>
         protected async Task GetSecondary() {
-            characters = SideCharacterClass.GetSecondary();
+            SideCharacterClass _sideCharacterClass = new SideCharacterClass();
+            characters = _sideCharacterClass.GetSecondary();
             await grid.Reload();
         }
 
         protected async Task Add() {
-            
-            CharacterClass.Add(character);
-            Get();
+
+            _characterClass.Add(character);
+            await Get();
             character = new CharacterDTO{Game = new VideogameDTO()};               
         }
 
         protected async Task Edit(int id) {
             isEditActive = true;
-            Get(id);
+            await Get(id);
         }
 
         protected async Task Update() {
 
-            CharacterClass.Add(character);
+            _characterClass.Update(character);
+            isEditActive = false;
+            await Get();
+            character = new CharacterDTO { Game = new VideogameDTO() };
         }
 
         protected async Task Delete(int id)
         {
-            CharacterClass.Delete(id);
-            Get();
+            _characterClass.Delete(id);
+            await Get();
         }
     }
 }
