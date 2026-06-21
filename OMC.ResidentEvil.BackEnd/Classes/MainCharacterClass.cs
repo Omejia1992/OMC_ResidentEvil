@@ -11,7 +11,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
     public class MainCharacterClass : CharacterClass
     {
         static dbContext db = new dbContext();       
-        public static List<CharacterDTO> GetMain() {
+        public List<CharacterDTO> GetMain() {
 
             List<CharacterDTO> characters = new List<CharacterDTO>();
 
