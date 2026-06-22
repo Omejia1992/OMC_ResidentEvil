@@ -22,6 +22,8 @@ namespace OMC.ResidentEvil.BackEnd.Helpers
                     MiddleName = item.MiddleName,
                     LastName = item.LastName,
                     IsMain = item.IsMain,
+                    IsVillian = item.IsVillain,
+                    IsSidekick = item.IsSideKick,
 
                     Games = item.VideogameCharacters.Select(vc => new VideogameDTO
                     {
@@ -31,6 +33,32 @@ namespace OMC.ResidentEvil.BackEnd.Helpers
                     }).ToList(),
 
                     GamesName = StringHelper.Combiner(item.VideogameCharacters.Select(vc => vc.IdGameNavigation.Name).ToList())
+                };
+                return character;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new CharacterDTO();
+            }
+        }
+
+        /// <summary>
+        /// Sets the Character from db to a DTO Basic Type 
+        /// </summary>
+        public CharacterDTO SetBasicCharacter(Character item)
+        {
+            try
+            {
+                CharacterDTO character = new CharacterDTO
+                {
+                    Id = item.Id,
+                    FirstName = item.FirstName,
+                    MiddleName = item.MiddleName,
+                    LastName = item.LastName,
+                    IsMain = item.IsMain,
+                    IsVillian = item.IsVillain,
+                    IsSidekick = item.IsSideKick,
                 };
                 return character;
             }
@@ -55,7 +83,9 @@ namespace OMC.ResidentEvil.BackEnd.Helpers
                     FirstName = character.FirstName,
                     MiddleName = character.MiddleName,
                     LastName = character.LastName,
-                    IsMain = character.IsMain
+                    IsMain = character.IsMain,
+                    IsVillain = character.IsVillian,
+                    IsSideKick = character.IsSidekick
                 };
             }
             catch(Exception ex){

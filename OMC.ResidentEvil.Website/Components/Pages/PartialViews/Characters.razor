@@ -27,15 +27,15 @@
                         <RadzenDataGridColumn Property="CharacterDTO.GamesName" Title="Games"        Width="200px" />
                         <RadzenDataGridColumn Property="CharacterDTO.FirstName"  Title="First Name"  Width="160px" />
                         <RadzenDataGridColumn Property="CharacterDTO.MiddleName" Title="Middle Name" Width="160px" />
-                        <RadzenDataGridColumn Property="CharacterDTO.LastName"   Title="Last Name"   Width="160px" />
-                        <RadzenDataGridColumn Property="CharacterDTO.FullName"   Title="Full Name"   Width="160px" />
-                        <RadzenDataGridColumn Property="CharacterDTO.IsMain"     Title="Main"        Width="160px" />
+                        <RadzenDataGridColumn Property="CharacterDTO.LastName"   Title="Last Name"   Width="160px" />                       
+                        <RadzenDataGridColumn Property="CharacterDTO.IsMain"     Title="Main"        Width="100px" />
+                        <RadzenDataGridColumn Property="CharacterDTO.IsVillian"  Title="Villian"     Width="100px" />
                         <RadzenDataGridColumn Title="Actions" Width="160px">
                             <Template Context="character">
                                 <RadzenButton Icon="delete" Click="@(() => Delete(character.Id))"
-                                    ButtonStyle="ButtonStyle.Danger"/>
+                                    ButtonStyle="ButtonStyle.Danger" title="Delete"/>
                                 <RadzenButton Icon="edit"   Click="@(() => Edit(character.Id))"
-                                    ButtonStyle="ButtonStyle.Success"/>
+                                    ButtonStyle="ButtonStyle.Success" title="Edit" />
                             </Template>
                         </RadzenDataGridColumn>
                     </Columns>  
@@ -77,6 +77,12 @@
 
                     <RadzenLabel   Text = "Main Character" />
                     <RadzenCheckBox @bind-Value="character.IsMain" />
+
+                    <RadzenLabel Text="Is a Villian" />
+                    <RadzenCheckBox @bind-Value="character.IsVillian" />
+
+                    <RadzenLabel Text="Is a Sidekick" />
+                    <RadzenCheckBox @bind-Value="character.IsSidekick" />
 
                     @if (!isEditActive)
                          { <RadzenButton Text="Add" Click="Add"/> }

@@ -12,6 +12,8 @@ namespace OMC.ResidentEvil.BackEnd.DTOS
         public string LastName { get; set; }
         public string FullName => $"{FirstName} {MiddleName} {LastName}";
         public bool IsMain { get; set; } 
+        public bool IsVillian {  get; set; }
+        public bool IsSidekick {  get; set; }
         public string GamesName { get; set; }
         public List<VideogameDTO> Games { get; set; }
     }

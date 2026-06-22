@@ -18,7 +18,9 @@
                         <RadzenDataGridColumn Title="Actions" Width="160px">
                             <Template Context="videogame">
                                 <RadzenButton Icon="delete" Click="@(() => Delete(videogame.Id))"
-                                       ButtonStyle="ButtonStyle.Danger"/>
+                                       ButtonStyle="ButtonStyle.Danger" title="Delete"/>
+                                <RadzenButton Icon="pageview"   Click="@(() => ViewCharacters(videogame.Id))"
+                                       ButtonStyle="ButtonStyle.Info" title="Characters"/>
                             </Template>
                         </RadzenDataGridColumn>
                     </Columns>
@@ -43,4 +45,26 @@
             <RadzenButton Text="Add" Click="Add"/>
         </li>
     </ul>
+</div>
+
+<div class="newEntry">
+    <h2>Characters</h2>
+
+    <RadzenDataGrid @ref="chargrid"
+                    AllowFiltering="true"
+                    AllowPaging="true"
+                    AllowSorting="true"
+                    AllowColumnResize="true"
+                    Data="@characters"
+                    TItem="CharacterDTO"
+                    PageSize="8">
+        <Columns>
+            <RadzenDataGridColumn Property="CharacterDTO.Id" Title="Id" Width="60px" />
+            <RadzenDataGridColumn Property="CharacterDTO.FirstName" Title="First Name" Width="160px" />
+            <RadzenDataGridColumn Property="CharacterDTO.MiddleName" Title="Middle Name" Width="160px" />
+            <RadzenDataGridColumn Property="CharacterDTO.LastName" Title="Last Name" Width="160px" />
+            <RadzenDataGridColumn Property="CharacterDTO.IsMain" Title="Main" Width="100px" />
+            <RadzenDataGridColumn Property="CharacterDTO.IsVillian" Title="Villian" Width="100px" />
+        </Columns>
+    </RadzenDataGrid>
 </div>

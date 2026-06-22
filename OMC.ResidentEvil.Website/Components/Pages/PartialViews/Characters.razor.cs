@@ -17,6 +17,7 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         bool isEditActive = false;
         CharacterClass _characterClass = new CharacterClass();
 
+
         RadzenDataGrid<CharacterDTO> grid = new RadzenDataGrid<CharacterDTO>();
         List<CharacterDTO> characters = new List<CharacterDTO>();
         List<VideogameDTO> games = new List<VideogameDTO>();

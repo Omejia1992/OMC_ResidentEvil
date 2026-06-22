@@ -10,13 +10,17 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
     public partial class Videogames
     {
         RadzenDataGrid<VideogameDTO> grid = new RadzenDataGrid<VideogameDTO>();
-        List<VideogameDTO> games = new List<VideogameDTO>();
+        RadzenDataGrid<CharacterDTO> chargrid = new RadzenDataGrid<CharacterDTO>();
 
+        List<VideogameDTO> games = new List<VideogameDTO>();
+        List<CharacterDTO> characters = new List<CharacterDTO>();
+        
         VideogameDTO game = new VideogameDTO();
+        CharacterClass _characterClass = new CharacterClass();
 
         protected override void OnInitialized(){
            
-            Get();
+             Get();
         }
 
         protected async Task Get()
@@ -29,14 +33,20 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         protected async Task Add() {
           
             VideogameClass.Add(game);
-            Get();
+            await Get();
                        
         }
 
         protected async Task Delete(int id) {
 
             VideogameClass.Delete(id);
-            Get();            
+            await Get();            
+        }
+
+        protected async Task ViewCharacters(int id) {
+
+            characters = _characterClass.GetByVideogame(id);
+           await chargrid.Reload();
         }
     }
 }

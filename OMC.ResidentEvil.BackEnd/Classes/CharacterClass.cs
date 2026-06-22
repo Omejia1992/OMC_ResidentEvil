@@ -15,6 +15,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
     {
         private dbContext db = new dbContext();
         static CharacterHelper cHelper = new CharacterHelper();
+        public delegate object SetCharacter(Character item);
 
         /// <summary>
         /// Gets the Characters Data
@@ -28,7 +29,8 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                 foreach (var item in db.Characters.AsNoTracking().Include(i => i.VideogameCharacters)
                                                   .ThenInclude( iv => iv.IdGameNavigation))
                 {
-                    characters.Add(cHelper.SetCharacter(item));
+                    SetCharacter del = cHelper.SetCharacter;
+                    characters.Add((CharacterDTO)del(item));
                 }
                 return characters;
             }
@@ -49,7 +51,8 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                                               .Where( c => c.Id == id).FirstOrDefault();
 
                 if (lcharacter != null){
-                    character = cHelper.SetCharacter(lcharacter);
+                    SetCharacter del = cHelper.SetCharacter;
+                    character = (CharacterDTO)del(lcharacter);
                 }
             }
             catch (Exception ex) {
@@ -59,8 +62,32 @@ namespace OMC.ResidentEvil.BackEnd.Classes
         }
 
         /// <summary>
-        /// Adds a new Character in the Database
+        /// Gets the Characters that belong to a videogame
         /// </summary>
+        /// <returns></returns>
+        public List<CharacterDTO> GetByVideogame(int videogameId)
+        {
+            try
+            {
+                List<CharacterDTO> characters = new List<CharacterDTO>();
+
+                foreach (var item in db.Characters.AsNoTracking().Where( c => c.VideogameCharacters.Any( v => v.IdGame == videogameId))
+                                                                 .Include(i => i.VideogameCharacters))
+                {
+                    SetCharacter del = cHelper.SetBasicCharacter;
+                    characters.Add((CharacterDTO)del(item));
+                }
+                return characters;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message); return new List<CharacterDTO>();
+            }
+        }
+
+        /// <summary>
+    /// Adds a new Character in the Database
+    /// </summary>
         public void Add(CharacterDTO character){
 
             try
