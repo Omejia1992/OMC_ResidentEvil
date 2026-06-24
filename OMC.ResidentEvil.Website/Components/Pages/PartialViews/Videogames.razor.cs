@@ -17,6 +17,7 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         
         VideogameDTO game = new VideogameDTO();
         CharacterClass _characterClass = new CharacterClass();
+        bool isEditActive = false;
 
         protected override void OnInitialized(){
            
@@ -37,12 +38,22 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
                        
         }
 
+        protected async Task Edit(int id) {
+          isEditActive = true;
+          game = VideogameClass.Get(id);
+        }
+
+        protected async Task Update() {
+            VideogameClass.Update(game);
+            isEditActive = false;           
+            await Get();
+        }
+
         protected async Task Delete(int id) {
 
             VideogameClass.Delete(id);
             await Get();            
         }
-
         protected async Task ViewCharacters(int id) {
 
             characters = _characterClass.GetByVideogame(id);

@@ -86,8 +86,8 @@ namespace OMC.ResidentEvil.BackEnd.Classes
         }
 
         /// <summary>
-    /// Adds a new Character in the Database
-    /// </summary>
+        /// Adds a new Character in the Database
+        /// </summary>
         public void Add(CharacterDTO character){
 
             try
@@ -161,6 +161,13 @@ namespace OMC.ResidentEvil.BackEnd.Classes
 
                 if(character != null)
                 {
+                    var relations = db.VideogameCharacters.Where(c => c.Idcharacter == id);
+
+                    foreach (var relation in relations)
+                    {
+                        db.VideogameCharacters.Remove(relation);    
+                    }
+
                     db.Characters.Remove(character);
                     db.SaveChanges();
                 }

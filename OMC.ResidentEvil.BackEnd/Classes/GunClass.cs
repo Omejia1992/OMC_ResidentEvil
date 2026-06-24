@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMC.ResidentEvil.BackEnd.DTOS;
+using OMC.ResidentEvil.BackEnd.Helpers;
 using OMC.ResidentEvil.BackEnd.Interfaces;
 using OMC.ResidentEvil.BackEnd.Models;
 using System;
@@ -12,32 +13,50 @@ namespace OMC.ResidentEvil.BackEnd.Classes
     public class GunClass: IMethods<GunDTO>
     {
         static dbContext db = new dbContext();
+        delegate object SetGun(Gun gun);
+        static GunHelper gHelper = new GunHelper();
+
+        /// <summary>
+        /// Gets a List of the existing Guns
+        /// </summary>
         public static List<GunDTO> Get()
         {
             try
             {
                 List<GunDTO> guns = new List<GunDTO>();
+                SetGun del = gHelper.SetGun;
 
                 foreach (var item in db.Guns.Include(i => i.IdGameNavigation))
                 {
-                    guns.Add(new GunDTO
-                    {
-                        Id = item.Id,
-                        Name = item.Name,
-                        Game = new VideogameDTO
-                        {
-                            Id = item.IdGameNavigation.Id,
-                            Name = item.IdGameNavigation.Name,
-                            Year = item.IdGameNavigation.Year
-                        }
-                    });
+                    guns.Add((GunDTO)del(item));
                 }
                 return guns;
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); return new List<GunDTO>(); }
         }
-        public static void Add(GunDTO gun) {
 
+        /// <summary>
+        /// Gets a Particular Gun Data using it's Id
+        /// </summary>
+        public static GunDTO Get(int id)
+        {
+            try
+            {
+                GunDTO gun = new GunDTO();
+                Gun lGun = db.Guns.Find(id);
+                
+                SetGun del = gHelper.SetGun;
+                gun = (GunDTO)del(lGun);
+                return gun;
+            }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); return new GunDTO(); }
+        }
+
+        /// <summary>
+        /// Adds a new Gun to the Database
+        /// </summary>
+        public static void Add(GunDTO gun) 
+        {
             try
             {
                 db.Guns.Add(new Gun
@@ -47,9 +66,27 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                 });
                 db.SaveChanges();
             }
-            catch (Exception ex) { Debug.WriteLine(ex.Message); }
-        
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }        
         }
+
+        /// <summary>
+        /// Updates the existing Gun Basic Data
+        /// </summary>
+        public static void Update(GunDTO gun)
+        {
+            try
+            {
+                Gun lGun = gHelper.SetGun(gun);
+                db.Update(lGun);
+                db.SaveChanges();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
+
+        /// <summary>
+        /// Deletes a Gun from the Database
+        /// </summary>
+        /// <param name="id"></param>
         public static void Delete(int id) {
 
             try

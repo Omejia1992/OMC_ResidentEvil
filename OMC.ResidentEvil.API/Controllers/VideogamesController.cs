@@ -1,33 +1,35 @@
 using Microsoft.AspNetCore.Mvc;
 using OMC.ResidentEvil.BackEnd.DTOS;
 using OMC.ResidentEvil.BackEnd.Models;
+using OMC.ResidentEvil.BackEnd.Classes;
 
-namespace OMC.ResidentEvil.BackEnd.Controllers
+namespace OMC.ResidentEvil.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class VideogamesController : ControllerBase
     {
         private dbContext db = new dbContext();
+                CharacterClass _characterClass = new CharacterClass();
 
         /// Get Methods        
 
         [HttpGet("games")]
-        public IEnumerable<Videogame> GetGames() {
+        public IEnumerable<VideogameDTO> GetGames() {
 
-            return db.Videogames;
+            return VideogameClass.Get();
         }
 
         [HttpGet("characters")]
-        public IEnumerable<Character> GetCharacters() {
+        public IEnumerable<CharacterDTO> GetCharacters() {
 
-            return db.Characters;
+            return _characterClass.Get();
         }
 
         [HttpGet("guns")]
-        public IEnumerable<Gun> GetGuns() {
+        public IEnumerable<GunDTO> GetGuns() {
 
-            return db.Guns;
+            return GunClass.Get();
         }
 
         /// Post Methods
@@ -35,34 +37,25 @@ namespace OMC.ResidentEvil.BackEnd.Controllers
         [HttpPost("createGame")]
         public void CreateGame([FromBody] VideogameDTO videogame) { 
             
-            Videogame game = new Videogame { Name = videogame.Name, 
-                                             Year = videogame.Year , 
-                                        HasRemake = videogame.HasRemake};
-            db.Videogames.Add(game);
-            db.SaveChanges();
+            VideogameClass.Add(videogame);
         }
 
         [HttpPost("createCharacter")]
         public void CreateCharacter([FromBody] CharacterDTO characterDto)
         {
-            Character character = new Character
-            {
-                FirstName  = characterDto.FirstName,              
-                LastName   = characterDto.LastName
-            };
-            db.Characters.Add(character);
-            db.SaveChanges();
+            _characterClass.Add(characterDto);
         }
 
         [HttpPost("createGun/{idGame},{name}")]
         public void CreateGun(int idGame, string name)
         {
-            Gun gun = new Gun { IdGame = idGame, Name = name };
-            db.Guns.Add(gun);
-            db.SaveChanges();
+            GunDTO gun = new GunDTO { Name = name, 
+                                       Game = new VideogameDTO { Id = idGame } };
+            GunClass.Add(gun);        
+
         }
 
-        /// Put Methods
+        /// Patch Methods
         [HttpPatch("updateGun")]
         public void UpdateGun([FromBody] GunDTO gunDTO) {
 
@@ -88,13 +81,27 @@ namespace OMC.ResidentEvil.BackEnd.Controllers
         [HttpPatch("updateCharacter")]
         public void UpdateCharacter([FromBody] CharacterDTO characterDTO) { 
             
-            Character character = db.Characters.Find(characterDTO.Id);
-                      character.FirstName = characterDTO.FirstName;
-                      character.LastName = characterDTO.LastName;
-                      character.MiddleName = characterDTO.MiddleName;
+            _characterClass.Update(characterDTO);
 
-            db.Update(character);
-            db.SaveChanges();
+        }
+
+        /// Delete Methods
+        [HttpDelete("deleteGame/{idGame}")]
+        public void DeleteGame(int idGame) { 
+            
+            VideogameClass.Delete(idGame);
+        }
+
+        [HttpDelete("deleteCharacter/{idCharacter}")]
+        public void DeleteCharacter(int idCharacter) { 
+            
+            _characterClass.Delete(idCharacter);
+        }
+
+        [HttpDelete("deleteGun/{idGun}")]
+        public void DeleteGun(int idGun) { 
+            
+            GunClass.Delete(idGun);
         }
     }
 }

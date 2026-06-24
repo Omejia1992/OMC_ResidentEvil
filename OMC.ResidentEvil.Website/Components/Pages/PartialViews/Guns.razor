@@ -19,6 +19,8 @@
                             <Template Context="gun">
                                 <RadzenButton Icon="delete" Click="@(() => Delete(gun.Id))"
                                     ButtonStyle="ButtonStyle.Danger"/>
+                                <RadzenButton Icon="edit" Click="@(() => Edit(gun.Id))"
+                                    ButtonStyle="ButtonStyle.Secondary" />
                             </Template>
                         </RadzenDataGridColumn>
                     </Columns>            
@@ -28,7 +30,10 @@
 <div class="newEntry">
     <ul>
         <li class="listLine">
-            <h3> New Gun </h3> 
+            @if (!isEditActive)
+            { <h3> New Gun </h3> }
+            else
+            { <h3> Update Gun Data </h3>}
         </li>
     </ul>
     <ul>
@@ -40,7 +45,11 @@
             <RadzenLabel Text="Name" />
             <RadzenTextBox Placeholder="Name" @bind-Value="gun.Name" />
             
-            <RadzenButton Text="Add" Click="Add"/>
+            
+            @if (!isEditActive)
+            { <RadzenButton Text="Add" Click="Add" /> }
+            else
+            { <RadzenButton Text="Update" Click="Update" /> }
         </li>
     </ul>
 </div>

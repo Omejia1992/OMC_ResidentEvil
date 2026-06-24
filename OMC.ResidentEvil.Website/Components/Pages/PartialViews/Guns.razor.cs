@@ -14,7 +14,7 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
 
         List<VideogameDTO> games = new List<VideogameDTO>();
         GunDTO gun = new GunDTO{ Game = new VideogameDTO()};
-       
+        bool isEditActive = false;
         protected override void OnInitialized(){
 
             games = VideogameClass.Get();
@@ -32,6 +32,19 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
             GunClass.Add(gun);
             Get();
             gun = new GunDTO { Game = new VideogameDTO() };
+        }
+
+        protected async Task Edit(int id)
+        {
+            isEditActive = true;
+            gun = GunClass.Get(id);
+        }
+
+        protected async Task Update()
+        {
+            GunClass.Update(gun);
+            isEditActive = false;
+            await Get();
         }
 
         protected async Task Delete(int id)

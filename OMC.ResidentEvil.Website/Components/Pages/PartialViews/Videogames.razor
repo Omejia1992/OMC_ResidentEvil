@@ -17,8 +17,10 @@
                         <RadzenDataGridColumn Property="VideogameDTO.Year" Title="Year" Width="100px"/>
                         <RadzenDataGridColumn Title="Actions" Width="160px">
                             <Template Context="videogame">
-                                <RadzenButton Icon="delete" Click="@(() => Delete(videogame.Id))"
+                                <RadzenButton Icon="delete"     Click="@(() => Delete(videogame.Id))"
                                        ButtonStyle="ButtonStyle.Danger" title="Delete"/>
+                                <RadzenButton Icon="edit"       Click="@(() => Edit(videogame.Id))"
+                                       ButtonStyle="ButtonStyle.Secondary" />
                                 <RadzenButton Icon="pageview"   Click="@(() => ViewCharacters(videogame.Id))"
                                        ButtonStyle="ButtonStyle.Info" title="Characters"/>
                             </Template>
@@ -30,7 +32,9 @@
 <div class="newEntry">
     <ul>
         <li class="listLine">
-            <h3> New Game </h3>
+            @if (!isEditActive)
+                { <h3> New Game </h3> }
+           else { <h3> Update Videogame Data </h3> }
         </li>
         <li class="listLine">
             <RadzenLabel Text ="Name" />
@@ -41,8 +45,11 @@
 
             <RadzenLabel Text="Remake" />
             <RadzenCheckBox @bind-Value="game.HasRemake" /> 
+           
+            @if (!isEditActive)
+                 { <RadzenButton Text="Add"    Click="Add"/> }
+            else{ <RadzenButton Text="Update" Click="Update"/>}
 
-            <RadzenButton Text="Add" Click="Add"/>
         </li>
     </ul>
 </div>
