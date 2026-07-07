@@ -26,7 +26,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
                 List<GunDTO> guns = new List<GunDTO>();
                 SetGun del = gHelper.SetGun;
 
-                foreach (var item in db.Guns.Include(i => i.IdGameNavigation))
+                foreach (var item in db.Guns.AsNoTracking().Include(i => i.IdGameNavigation))
                 {
                     guns.Add((GunDTO)del(item));
                 }
@@ -43,10 +43,14 @@ namespace OMC.ResidentEvil.BackEnd.Classes
             try
             {
                 GunDTO gun = new GunDTO();
-                Gun lGun = db.Guns.Find(id);
+                Gun lGun = db.Guns.AsNoTracking().Include( i => i.IdGameNavigation)
+                                                 .Where( g => g.Id == id).FirstOrDefault();
                 
-                SetGun del = gHelper.SetGun;
-                gun = (GunDTO)del(lGun);
+                if (lGun != null)
+                {
+                    SetGun del = gHelper.SetGun;
+                    gun = (GunDTO)del(lGun);
+                }
                 return gun;
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); return new GunDTO(); }

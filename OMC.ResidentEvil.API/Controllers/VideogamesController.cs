@@ -59,23 +59,13 @@ namespace OMC.ResidentEvil.API.Controllers
         [HttpPatch("updateGun")]
         public void UpdateGun([FromBody] GunDTO gunDTO) {
 
-            Gun gun = db.Guns.Find(gunDTO.Id);
-                gun.Name = gunDTO.Name;
-           
-            db.Update(gun);
-            db.SaveChanges();
+             GunClass.Update(gunDTO);
         }
 
         [HttpPatch("updateGame")]
         public void UpdateGame([FromBody] VideogameDTO videogameDTO) { 
 
-            Videogame game = db.Videogames.Find(videogameDTO.Id);
-                      game.Year = videogameDTO.Year;
-                      game.Name = videogameDTO.Name;
-                      game.HasRemake = videogameDTO.HasRemake;
-
-            db.Update(game);
-            db.SaveChanges();
+            VideogameClass.Update(videogameDTO);
         }
 
         [HttpPatch("updateCharacter")]

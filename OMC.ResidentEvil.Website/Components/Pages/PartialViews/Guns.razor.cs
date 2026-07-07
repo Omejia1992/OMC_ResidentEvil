@@ -43,6 +43,7 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         protected async Task Update()
         {
             GunClass.Update(gun);
+            gun = new GunDTO { Game = new VideogameDTO() };
             isEditActive = false;
             await Get();
         }

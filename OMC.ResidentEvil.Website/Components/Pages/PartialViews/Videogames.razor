@@ -12,9 +12,10 @@
                     TItem= "VideogameDTO"
                     PageSize="8">
                     <Columns>
-                        <RadzenDataGridColumn Property="VideogameDTO.Id"   Title="Id"   Width="160px"/>
-                        <RadzenDataGridColumn Property="VideogameDTO.Name" Title="Name" Width="160px"/>
-                        <RadzenDataGridColumn Property="VideogameDTO.Year" Title="Year" Width="100px"/>
+                        <RadzenDataGridColumn Property="VideogameDTO.Id"        Title="Id"     Width="160px"/>
+                        <RadzenDataGridColumn Property="VideogameDTO.Name"      Title="Name"   Width="160px"/>
+                        <RadzenDataGridColumn Property="VideogameDTO.Year"      Title="Year"   Width="100px"/>
+                        <RadzenDataGridColumn Property="VideogameDTO.HasRemake" Title="Remake" Width="100px" />
                         <RadzenDataGridColumn Title="Actions" Width="160px">
                             <Template Context="videogame">
                                 <RadzenButton Icon="delete"     Click="@(() => Delete(videogame.Id))"
