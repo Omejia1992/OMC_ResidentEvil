@@ -1,4 +1,5 @@
-﻿using OMC.ResidentEvil.BackEnd.DTOS;
+﻿using Microsoft.EntityFrameworkCore;
+using OMC.ResidentEvil.BackEnd.DTOS;
 using OMC.ResidentEvil.BackEnd.Helpers;
 using OMC.ResidentEvil.BackEnd.Interfaces;
 using OMC.ResidentEvil.BackEnd.Models;
@@ -23,7 +24,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
             try
             {
                 List<VideogameDTO> games = new List<VideogameDTO>();
-                var data = db.Videogames;
+                var data = db.Videogames.AsNoTracking();
 
                 SetVideogame del = vHelper.SetVideoGame;
                 foreach (var item in data)
@@ -44,7 +45,7 @@ namespace OMC.ResidentEvil.BackEnd.Classes
             try
             {
                 VideogameDTO game = new VideogameDTO();
-                Videogame lGame = db.Videogames.Find(id);
+                Videogame lGame = db.Videogames.AsNoTracking().Where( l => l.Id == id).FirstOrDefault();
 
                 if (lGame != null)
                 {
