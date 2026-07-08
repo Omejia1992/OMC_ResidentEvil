@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Options;
+using OMC.ResidentEvil.BackEnd.Classes;
+using OMC.ResidentEvil.BackEnd.Services;
 using OMC.ResidentEvil.Website.Components;
 using Radzen;
 
@@ -8,6 +11,22 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddRadzenComponents();
+
+// Register ApiSettings
+builder.Services.Configure<ApiSettings>(
+        builder.Configuration.GetSection("ApiSettings")
+        );
+
+// Get Url from ApiSettings
+builder.Services.AddHttpClient("MyApi", (sp, client) =>
+{
+    var settings = sp.GetRequiredService<IOptions<ApiSettings>>().Value;
+    client.BaseAddress = new Uri(settings.BaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(settings.TimeoutSeconds);
+});
+
+// Register HttpService
+builder.Services.AddScoped<HttpService>();
 
 var app = builder.Build();
 
