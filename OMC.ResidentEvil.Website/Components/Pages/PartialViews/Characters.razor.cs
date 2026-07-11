@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
+
 using OMC.ResidentEvil.BackEnd.Classes;
 using OMC.ResidentEvil.BackEnd.DTOS;
 using OMC.ResidentEvil.BackEnd.Enums;
 using OMC.ResidentEvil.BackEnd.Models;
+using OMC.ResidentEvil.BackEnd.Helpers;
 using OMC.ResidentEvil.BackEnd.Services;
+
 using Radzen.Blazor;
 using System.Diagnostics;
 
@@ -96,7 +99,10 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
 
         protected async Task Add() {
 
-            _characterClass.Add(character);
+            character.Games = new List<VideogameDTO>();
+            character.Game.Name = string.Empty;
+
+            await _httpService.AddCharacter(character); 
             await Get();
             character = new CharacterDTO{Game = new VideogameDTO()};               
         }
@@ -116,7 +122,8 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
 
         protected async Task Delete(int id)
         {
-            _characterClass.Delete(id);
+            string key = StringHelper.GetDescription(ApiKeys.Characters);
+            await _httpService.Delete(id, key);
             await Get();
         }
     }

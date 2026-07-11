@@ -28,4 +28,16 @@ namespace OMC.ResidentEvil.BackEnd.Enums
         [Description("Secondary")]
         Secondary = 2,
     }
+
+    public enum ApiKeys {
+
+        [Description("Game")]
+        Videogames = 1,
+
+        [Description("Character")]
+        Characters = 2,
+
+        [Description("Gun")]
+              Guns = 3
+    }
 }

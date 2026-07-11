@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Identity.Client;
+
 using OMC.ResidentEvil.BackEnd.Classes;
 using OMC.ResidentEvil.BackEnd.DTOS;
 using OMC.ResidentEvil.BackEnd.Services;
+using OMC.ResidentEvil.BackEnd.Helpers;
+
 using Radzen.Blazor;
 using System.Diagnostics;
+using OMC.ResidentEvil.BackEnd.Enums;
 
 namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
 {
@@ -39,15 +43,15 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
         }
 
         protected async Task Add() {
-          
-            VideogameClass.Add(game);
+
+            await _httpService.AddGame(game);
             await Get();
                        
         }
 
         protected async Task Edit(int id) {
           isEditActive = true;
-          game = VideogameClass.Get(id);
+          game = await _httpService.GetGame(id);
         }
 
         protected async Task Update() {
@@ -58,12 +62,13 @@ namespace OMC.ResidentEvil.Website.Components.Pages.PartialViews
 
         protected async Task Delete(int id) {
 
-            VideogameClass.Delete(id);
+            string key = StringHelper.GetDescription(ApiKeys.Videogames);
+            await _httpService.Delete(id, key);
             await Get();            
         }
         protected async Task ViewCharacters(int id) {
 
-            characters = _characterClass.GetByVideogame(id);
+           characters = await _httpService.GetCharactersByGameAsync(id);
            await chargrid.Reload();
         }
     }
